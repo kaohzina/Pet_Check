@@ -28,6 +28,8 @@ app.get('/', (req, res) => res.render('index', {
     members
 }));
 
+// route to the users pet profile
+
 // Set static folder
 // hint: move after the Homepage route to see another render of the server
 app.use(express.static(path.join(__dirname, 'public')));
