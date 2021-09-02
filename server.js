@@ -38,7 +38,7 @@ app.get('/', (req, res) => res.render('index', {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // members api routes
-app.use('/api/members', require('./routes/api/members'));
+app.use('/api/members', require('./routes/api/members-route'));
 
 const PORT = process.env.PORT || 3001;
 

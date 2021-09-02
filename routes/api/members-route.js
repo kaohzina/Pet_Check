@@ -3,27 +3,11 @@ const uuid = require('uuid');
 const router = express.Router();
 const members = require('../../Members');
 
-// Get all members
-router.get('/', (req, res) => res.json(members));
 
-// app.get('/', (req, res) => {
-//     // this is not ideal because we would have to declare a route for every webpage
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'))
-// });
+// This files purpose is to Create, Read, Update, Delete. 
 
-// Get Single Member
-router.get('/:id', (req, res) => {
-    const found = members.some(member => member.id === parseInt(req.params.id));
-
-    if (found) {
-        res.json(members.filter(member => member.id === parseInt(req.params.id)));
-    } else {
-        res.status(400).json({ msg: `No member with the id of ${req.params.id}` });
-    }
-});
-
-// Create Member
-// In most cases a post request handles input data
+// Start of CREATE
+// Create a single individual
 router.post('/', (req, res) => {
     const newMember = {
         id: uuid.v4(),
@@ -45,7 +29,29 @@ router.post('/', (req, res) => {
     res.redirect('/');
 });
 
-// Update member
+
+// Start of the READ
+// Read all of the members
+router.get('/', (req, res) => res.json(members));
+
+// app.get('/', (req, res) => {
+//     // this is not ideal because we would have to declare a route for every webpage
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'))
+// });
+
+// Read a single member
+router.get('/:id', (req, res) => {
+    const found = members.some(member => member.id === parseInt(req.params.id));
+
+    if (found) {
+        res.json(members.filter(member => member.id === parseInt(req.params.id)));
+    } else {
+        res.status(400).json({ msg: `No member with the id of ${req.params.id}` });
+    }
+});
+
+// Start of UPDATE
+// Update a single members information
 router.put('/:id', (req, res) => {
     const found = members.some(member => member.id === parseInt(req.params.id));
 
@@ -65,6 +71,7 @@ router.put('/:id', (req, res) => {
     }
 })
 
+// Start of DELETE
 // Delete member
 router.delete('/:id', (req, res) => {
     const found = members.some(member => member.id === parseInt(req.params.id));
