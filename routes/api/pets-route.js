@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
     }
 
     // check if the email is sent with the request
-    if (!newMember.name || !newMember.email) {
+    if (!newPet.name || !newPet.animal ) {
         // in order to avoid an error add a return keyword otherwise the browser will look for an else
         return res.status(400).json({ msg: 'Please include a name and email' });
     }
