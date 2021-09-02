@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize/types');
 const sequelize = require('../config/connection');
 
 // Making an animal
-Animal.init(
+pets.init(
   {
     id:{
       type: DataTypes.INTEGER,
@@ -35,3 +35,5 @@ Animal.init(
       allowNull: false
     }
   })
+
+  

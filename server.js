@@ -7,7 +7,7 @@ const logger = require('./middleware/logger');
 const members = require('./Members');
 
 const app = express();
-const db = mysql2();
+
 
 // Init middleware
 // app.use(logger);

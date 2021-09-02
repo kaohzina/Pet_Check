@@ -1,4 +1,4 @@
-const animals = require("./animals");
+const animals = require("./pets");
 const user = require("./user");
 
 user.hasMany(animals, {
