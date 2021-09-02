@@ -16,8 +16,13 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.3.3",
     "moment": "^2.29.1",
+<<<<<<< HEAD
     "mysql2": "^2.3.0",
     "sequelize": "^6.6.5",
+=======
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.0",
+>>>>>>> 7de4d6a2a1fb4ceab8cf8402ec933db8d3c2fc7b
     "uuid": "^8.3.2"
   },
   "devDependencies": {

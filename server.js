@@ -1,4 +1,5 @@
 const express = require('express');
+const mysql2 = require('mysql2');
 const path = require('path');
 const exphbs = require('express-handlebars');
 const logger = require('./middleware/logger');
@@ -6,6 +7,7 @@ const logger = require('./middleware/logger');
 const members = require('./Members');
 
 const app = express();
+const db = mysql2();
 
 // Init middleware
 // app.use(logger);
@@ -21,12 +23,15 @@ app.use(express.json());
 // handle url encoding data
 app.use(express.urlencoded({ extended: false }));
 
+// connect to the database
 
 // Homepage Route:
 app.get('/', (req, res) => res.render('index', {
-    title: 'MemberApp',
+    title: 'Animal Companion App',
     members
 }));
+
+// route to the users pet profile
 
 // Set static folder
 // hint: move after the Homepage route to see another render of the server
