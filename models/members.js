@@ -1,5 +1,7 @@
 const { DataTypes } = require("sequelize/types");
 const { user } = require(".");
+const uuid = require('uuid');
+
 
 user.init (
   {
@@ -38,3 +40,5 @@ user.init (
     }
   }
 )
+
+module.exports = members;
