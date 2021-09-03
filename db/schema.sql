@@ -1,5 +1,3 @@
-DROP DATABASE IF EXISTS pets_db;
-DROP DATABASE IF EXISTS members_db;
+DROP DATABASE IF EXISTS just_tech_news_db;
 
-CREATE DATABASE pets_db;
-CREATE DATABASE members_db;
+CREATE DATABASE just_tech_news_db;

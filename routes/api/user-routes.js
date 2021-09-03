@@ -1,9 +1,3 @@
-const express = require('express');
-const { UPSERT } = require('sequelize/types/lib/query-types');
-const uuid = require('uuid');
-const router = express.Router();
-const members = require('../../models');
-
 const router = require('express').Router();
 const { User, Post, Vote } = require('../../models');
 
