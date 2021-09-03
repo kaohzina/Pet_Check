@@ -1,86 +1,141 @@
 const express = require('express');
+const { UPSERT } = require('sequelize/types/lib/query-types');
 const uuid = require('uuid');
 const router = express.Router();
-const members = require('../../Members');
+const members = require('../../models');
 
+const router = require('express').Router();
+const { User, Post, Vote } = require('../../models');
 
-// This files purpose is to Create, Read, Update, Delete. 
-
-// Start of CREATE
-// Create a single individual
-router.post('/', (req, res) => {
-    const newMember = {
-        id: uuid.v4(),
-        name: req.body.name,
-        email: req.body.email,
-        status: 'active'
-    }
-
-    // check if the email is sent with the request
-    if (!newMember.name || !newMember.email) {
-        // in order to avoid an error add a return keyword otherwise the browser will look for an else
-        return res.status(400).json({ msg: 'Please include a name and email' });
-    }
-
-    // taking the hard-coded members array and respond with the array of members which includes the new entry
-    members.push(newMember);
-    // res.json(members);
-    // a redirect so the json doesn't render on the page
-    res.redirect('/');
+// GET /api/users
+router.get('/', (req, res) => {
+  // Access our User model and run .findAll() method)
+  User.findAll({
+  attributes: { exclude: ['password'] }
+  })
+  .then(dbUserData => res.json(dbUserData))
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
-
-// Start of the READ
-// Read all of the members
-router.get('/', (req, res) => res.json(members));
-
-// app.get('/', (req, res) => {
-//     // this is not ideal because we would have to declare a route for every webpage
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'))
-// });
-
-// Read a single member
+// GET /api/users/1
 router.get('/:id', (req, res) => {
-    const found = members.some(member => member.id === parseInt(req.params.id));
-
-    if (found) {
-        res.json(members.filter(member => member.id === parseInt(req.params.id)));
-    } else {
-        res.status(400).json({ msg: `No member with the id of ${req.params.id}` });
+  User.findOne({
+    attributes: { exclude: ['password'] },
+    include: [
+      {
+        model: Post,
+        attributes: ['id', 'title', 'post_url', 'created_at']
+      },
+      {
+        model: Post,
+        attributes: ['title'],
+        through: Vote,
+        as: 'voted_posts'
+      }
+    ],
+    where: {
+      id: req.params.id
     }
+  })
+    .then(dbUserData => {
+      if (!dbUserData) {
+        res.status(404).json({ message: 'No user found with this id' });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
-// Start of UPDATE
-// Update a single members information
+// POST /api/users
+router.post('/', (req, res) => {
+  // expects {username 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
+  User.create({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password
+  })
+    .then(dbUserData => res.json(dbUserData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+router.post('/login', (req, res) => {
+  // expects {email: 'lernantino@gmail.com', password: 'password1234'}
+    User.findOne({
+      where: {
+        email: req.body.email
+      }
+    }).then(dbUserData => {
+      if (!dbUserData) {
+        res.status(400).json({ message: 'No user with that email address!' });
+        return;
+      }
+  
+      // res.json({ user: dbUserData });
+  
+      // Verify user
+      const validPassword = dbUserData.checkPassword(req.body.password);
+
+      if (!validPassword) {
+        res.status(400).json({ message: 'Incorrect password!' });
+        return;
+      }
+
+      res.json({ user: dbUserData, message: 'You are now logged in!'});
+    });  
+  });
+
+// PUT /api/users/1
 router.put('/:id', (req, res) => {
-    const found = members.some(member => member.id === parseInt(req.params.id));
+   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
-    if (found) {
-        const updMember = req.body;
-        members.forEach(member => {
-            if (member.id === parseInt(req.params.id)) {
-                // updadated member name else keep the old data
-                member.name = updMember.name ? updMember.name : member.name;
-                member.email = updMember.email ? updMember.email : member.email;
-
-                res.json({ msg: 'Member updated', member });
-            }
-        });
-    } else {
-        res.status(400).json({ msg: `No member with id of ${req.params.id}` });
+  // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
+  User.update(req.body, {
+    individualHooks: true,
+    where: {
+      id: req.params.id
     }
-})
+  })
+    .then(dbUserData => {
+      if (!dbUserData[0]) {
+        res.status(404).json({ message: 'No user found with id' });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
 
-// Start of DELETE
-// Delete member
+// DELETE /api/users/1
 router.delete('/:id', (req, res) => {
-    const found = members.some(member => member.id === parseInt(req.params.id));
-
-    if (found) {
-        res.json({ msg: 'Member deleted', members: members.filter(member => member.id !== parseInt(req.params.id))});
-    } else {
-        res.status(400).json({ msg: `No member with the id of ${req.params.id}` });
+  User.destroy({
+    where: {
+      id: req.params.id
     }
+  })
+    .then(dbUserData => {
+      if(!dbUserData) {
+        res.status(404).json({ message: 'No user found with this id' });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;
