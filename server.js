@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // turn on routes
 app.use(routes);
 
-app.get('/', (req, res) => res.render('index', {
+app.get('/', (req, res) => res.render('index.handlebars', {
     title: 'Animal Companion App',
     members
   }));
