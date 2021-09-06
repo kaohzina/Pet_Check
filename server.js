@@ -1,19 +1,29 @@
-const express = require('express');
-const routes = require('./controllers');
-const sequelize = require('./config/connection');
 const path = require('path');
+const express = require('express');
+const session = require('express-session');
 const exphbs = require('express-handlebars');
-const hbs = exphbs.create({});
-// const logger = require('./middleware/logger');
-// const members = require('./Members');
 
 const app = express();
 const PORT = process.env.PORT || 3001
 
-// Init middleware
-// app.use(logger);
+const sequelize = require('./config/connection');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-// Handlebars Middleware:
+//make the session private
+const sess = {
+  secret: 'something',
+  cookie: {},
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  })
+};
+
+app.use(session(sess));
+
+const hbs = exphbs.create({});
+
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
@@ -22,17 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // turn on routes
-app.use(routes);
-
-app.get('/', (req, res) => res.render('index.handlebars', {
-    title: 'Animal Companion App',
-    members
-  }));
-// members api routes
-app.use('/api/user', require('./controllers/api/user-routes'));
-
-
-// app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.use(require('./controllers/'));
 
 //turn on connection to db and server
 sequelize.sync({ force: false }).then(() => {
