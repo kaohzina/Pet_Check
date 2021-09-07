@@ -2,16 +2,16 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
 // create our Post model
-class Post extends Model {
+class Pet extends Model {
   //upvote is based on the post model and not an instance method
   static upvote(body, models) {
     return models.Vote.create({
       user_id: body.user_id,
-      post_id: body.post_id
+      pet_id: body.pet_id
     }).then(() => {
-      return Post.findOne({
+      return Pet.findOne({
         where: {
-          id: body.post_id
+          id: body.pet_id
         },
         attributes: [
           'id',
@@ -29,7 +29,7 @@ class Post extends Model {
 }
 
 // create fields/columns for Post model
-Post.init(
+Pet.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -60,8 +60,8 @@ Post.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'post'
+    modelName: 'pet'
   }
 );
 
-module.exports = Post;
+module.exports = Pet;
