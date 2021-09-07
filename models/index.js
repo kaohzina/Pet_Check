@@ -1,46 +1,46 @@
-const User = require('./Member');
-const Post = require('./Post');
+const Member = require('./Member');
+const Pet = require('./Pet');
 const Vote = require('./Vote');
 
-module.exports = { User, Post };
+module.exports = { Member, Pet };
 
 // create associations 
-User.hasMany(Post, {
-  foreignKey: 'user_id'
+Member.hasMany(Pet, {
+  foreignKey: 'Member_id'
 });
 
-Post.belongsTo(User, {
-  foreignKey: 'user_id',
+Pet.belongsTo(Member, {
+  foreignKey: 'Member_id',
 });
 
 
 
-User.belongsToMany(Post, {
+Member.belongsToMany(Pet, {
   through: Vote,
-  as: 'voted_posts',
-  foreignKey: 'user_id'
+  as: 'voted_Pets',
+  foreignKey: 'Member_id'
 });
 
-Post.belongsToMany(User, {
+Pet.belongsToMany(Member, {
   through: Vote,
-  as: 'voted_posts',
-  foreignKey: 'post_id'
+  as: 'voted_Pets',
+  foreignKey: 'Pet_id'
 });
 
-Vote.belongsTo(User, {
-  foreignKey: 'user_id'
+Vote.belongsTo(Member, {
+  foreignKey: 'Member_id'
 });
 
-Vote.belongsTo(Post, {
-  foreignKey: 'post_id'
+Vote.belongsTo(Pet, {
+  foreignKey: 'Pet_id'
 });
 
-User.hasMany(Vote, {
-  foreignKey: 'user_id'
+Member.hasMany(Vote, {
+  foreignKey: 'Member_id'
 });
 
-Post.hasMany(Vote, {
-  foreignKey: 'post_id'
+Pet.hasMany(Vote, {
+  foreignKey: 'Pet_id'
 });
 
-module.exports = { User, Post, Vote };
+module.exports = { Member, Pet, Vote };
