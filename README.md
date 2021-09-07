@@ -69,5 +69,4 @@ this is a seed example for the registration form!
 	"petType": "dog, cat, reptile.....",
 	"petBirthday": "timestamp?",
 	"gender": "gender"
-	"
 }
