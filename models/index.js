@@ -1,8 +1,8 @@
-const User = require('./member');
+const Member = require('./Member');
 const Post = require('./Post');
 const Vote = require('./Vote');
 
-module.exports = { User, Post };
+module.exports = { Member, Post };
 
 // create associations 
 member.hasMany(pets, {
