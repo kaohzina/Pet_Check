@@ -1,10 +1,10 @@
-const { Model, DataTypes } = require('sequelize');
+const { Member, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 const bcrypt = require('bcrypt');
 
 
 // create our User model
-class User extends Model {
+class Member extends Model {
   // set up method to run on instance data (per user) to check password
   checkPassword(loginPw) {
     return bcrypt.compareSync(loginPw, this.password);
@@ -12,9 +12,8 @@ class User extends Model {
 }
 
 // define table columns and configuration 
-User.init (
+Member.init (
   {
-    // TABLE COLUMN DEFINITIONS GO IN HERE
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -55,22 +54,14 @@ User.init (
         return updatedUserData;
       }
     },
-      //set up beforeUpdate lifecycle "hook" functionalisty
-    // pass in our imported sequelize connection (the direct connection to our database)
     sequelize,
-    // don't automatically create createdAt/updatedAt timestamp fields
     timestamps: false,
-    // don't pluralize name of database table
     freezeTableName: true,
-    // use underscores instead of camel-casing (i.e. `comment_text` and not `commentText`)
     underscored: true,
-    // make it so our model name stays lowercase in the database
-    modelName: 'user'
+    modelName: 'member'
   }
 );
 
-
-
-module.exports = User;
+module.exports = Member;
   
  
