@@ -52,7 +52,7 @@ router.get('/:id', (req, res) => {
 });
 
 // get all Pets
-router.Pet('/', (req, res) => {
+router.post('/', (req, res) => {
   // expects {title: 'Taskmaster goes public!', Pet_url: 'https://taskmaster.com/press', user_id: 1}
   Pet.create({
     title: req.body.title,
