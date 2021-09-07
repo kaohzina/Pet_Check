@@ -5,18 +5,13 @@ const router = require('express').Router();
 router.get('/', (req, res) => {
   res.render('homepage');
 });
-router.get('/about', (req, res) => {
-  res.render('about');
-});
-router.get('/products', (req, res) => {
-  res.render('products');
-});
-router.get('/services', (req, res) => {
-  res.render('services');
-});
-router.get('/signup', (req, res) => {
-  res.render('signup');
+
+router.get('/register', (req, res) => {
+  res.render('register');
 });
 
+router.get('/login', (req, res) => {
+  res.render('login');
+});
 
 module.exports = router;
