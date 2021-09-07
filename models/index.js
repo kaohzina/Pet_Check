@@ -1,6 +1,6 @@
-const Member = require('./Member');
+const Member = require('./Owner');
 const Pet = require('./Pet');
-const Vote = require('./Vote');
+const Vote = require('./Appointment');
 
 module.exports = { Member, Pet };
 
