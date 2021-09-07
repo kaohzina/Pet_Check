@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const sequelize = require('../../config/connection');
-const { Post, User, Vote } = require('../../models');
+const { Pet, User, Vote } = require('../../models');
 
 
 // get all users
 router.get('/', (req, res) => {
-  Post.findAll({
-    attributes: ['id', 'post_url', 'title', 'created_at', [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
+  Pet.findAll({
+    attributes: ['id', 'Pet_url', 'title', 'created_at', [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE Pet.id = vote.Pet_id)'), 'vote_count']
     ],
     order: [['created_at', 'DESC']],
     include: [
@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
       }
     ]
   })
-    .then(dbPostData => res.json(dbPostData))
+    .then(dbPetData => res.json(dbPetData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -25,11 +25,11 @@ router.get('/', (req, res) => {
 
 // get one user
 router.get('/:id', (req, res) => {
-  Post.findOne({
+  Pet.findOne({
     where: {
       id: req.params.id
     },
-    attributes: ['id', 'post_url', 'title', 'created_at', [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
+    attributes: ['id', 'Pet_url', 'title', 'created_at', [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE Pet.id = vote.Pet_id)'), 'vote_count']
   ],
     include: [
       {
@@ -38,12 +38,12 @@ router.get('/:id', (req, res) => {
       }
     ]
   })
-    .then(dbPostData => {
-      if (!dbPostData) {
-        res.status(404).json({ message: 'No post found with this id' });
+    .then(dbPetData => {
+      if (!dbPetData) {
+        res.status(404).json({ message: 'No Pet found with this id' });
         return;
       }
-      res.json(dbPostData);
+      res.json(dbPetData);
     })
     .catch(err => {
       console.log(err);
@@ -51,35 +51,35 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// get all posts
-router.post('/', (req, res) => {
-  // expects {title: 'Taskmaster goes public!', post_url: 'https://taskmaster.com/press', user_id: 1}
-  Post.create({
+// get all Pets
+router.Pet('/', (req, res) => {
+  // expects {title: 'Taskmaster goes public!', Pet_url: 'https://taskmaster.com/press', user_id: 1}
+  Pet.create({
     title: req.body.title,
-    post_url: req.body.post_url,
+    Pet_url: req.body.Pet_url,
     user_id: req.body.user_id
   })
-    .then(dbPostData => res.json(dbPostData))
+    .then(dbPetData => res.json(dbPetData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
     });
 });
 
-// PUT /api/posts/upvote
+// PUT /api/Pets/upvote
 // Make sure this is above the /:id put route, express will think "upvote" is a valid parameter for /:id
 router.put('/upvote', (req, res) => {
-  // custom static method created in models/Post.js
-  Post.upvote(req.body, { Vote })
-    .then(updatedPostData => res.json(updatedPostData))
+  // custom static method created in models/Pet.js
+  Pet.upvote(req.body, { Vote })
+    .then(updatedPetData => res.json(updatedPetData))
     .catch(err => {
       console.log(err);
       res.status(400).json(err);
     });
 });
-// update one post
+// update one Pet
 router.put('/:id', (req, res) => {
-  Post.update(
+  Pet.update(
     {
       title: req.body.title
     },
@@ -89,12 +89,12 @@ router.put('/:id', (req, res) => {
       }
     }
   )
-    .then(dbPostData => {
-      if (!dbPostData) {
-        res.status(404).json({ message: 'No post found with this id' });
+    .then(dbPetData => {
+      if (!dbPetData) {
+        res.status(404).json({ message: 'No Pet found with this id' });
         return;
       }
-      res.json(dbPostData);
+      res.json(dbPetData);
     })
     .catch(err => {
       console.log(err);
@@ -102,19 +102,19 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// delete one post
+// delete one Pet
 router.delete('/:id', (req, res) => {
-  Post.destroy({
+  Pet.destroy({
     where: {
       id: req.params.id
     }
   })
-    .then(dbPostData => {
-      if (!dbPostData) {
-        res.status(404).json({ message: 'No post found with this id' });
+    .then(dbPetData => {
+      if (!dbPetData) {
+        res.status(404).json({ message: 'No Pet found with this id' });
         return;
       }
-      res.json(dbPostData);
+      res.json(dbPetData);
     })
     .catch(err => {
       console.log(err);

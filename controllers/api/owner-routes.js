@@ -1,22 +1,22 @@
 const router = require('express').Router();
-const { User, Post, Vote } = require('../../models');
+const { Owner, Post, Vote } = require('../../models');
 
-// GET /api/users
+// GET /api/Owners
 router.get('/', (req, res) => {
-  // Access our User model and run .findAll() method)
-  User.findAll({
+  // Access our Owner model and run .findAll() method)
+  Owner.findAll({
   attributes: { exclude: ['password'] }
   })
-  .then(dbUserData => res.json(dbUserData))
+  .then(dbOwnerData => res.json(dbOwnerData))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
   });
 });
 
-// GET /api/users/1
+// GET /api/Owners/1
 router.get('/:id', (req, res) => {
-  User.findOne({
+  Owner.findOne({
     attributes: { exclude: ['password'] },
     include: [
       {
@@ -34,12 +34,12 @@ router.get('/:id', (req, res) => {
       id: req.params.id
     }
   })
-    .then(dbUserData => {
-      if (!dbUserData) {
-        res.status(404).json({ message: 'No user found with this id' });
+    .then(dbOwnerData => {
+      if (!dbOwnerData) {
+        res.status(404).json({ message: 'No Owner found with this id' });
         return;
       }
-      res.json(dbUserData);
+      res.json(dbOwnerData);
     })
     .catch(err => {
       console.log(err);
@@ -47,15 +47,15 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST /api/users
+// POST /api/Owners
 router.post('/', (req, res) => {
-  // expects {username 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
-  User.create({
-    username: req.body.username,
+  // expects {Ownername 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
+  Owner.create({
+    Ownername: req.body.Ownername,
     email: req.body.email,
     password: req.body.password
   })
-    .then(dbUserData => res.json(dbUserData))
+    .then(dbOwnerData => res.json(dbOwnerData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -64,47 +64,47 @@ router.post('/', (req, res) => {
 
 router.post('/login', (req, res) => {
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}
-    User.findOne({
+    Owner.findOne({
       where: {
         email: req.body.email
       }
-    }).then(dbUserData => {
-      if (!dbUserData) {
-        res.status(400).json({ message: 'No user with that email address!' });
+    }).then(dbOwnerData => {
+      if (!dbOwnerData) {
+        res.status(400).json({ message: 'No Owner with that email address!' });
         return;
       }
   
-      // res.json({ user: dbUserData });
+      // res.json({ Owner: dbOwnerData });
   
-      // Verify user
-      const validPassword = dbUserData.checkPassword(req.body.password);
+      // Verify Owner
+      const validPassword = dbOwnerData.checkPassword(req.body.password);
 
       if (!validPassword) {
         res.status(400).json({ message: 'Incorrect password!' });
         return;
       }
 
-      res.json({ user: dbUserData, message: 'You are now logged in!'});
+      res.json({ Owner: dbOwnerData, message: 'You are now logged in!'});
     });  
   });
 
-// PUT /api/users/1
+// PUT /api/Owners/1
 router.put('/:id', (req, res) => {
-   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
+   // expects {Ownername: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
   // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
-  User.update(req.body, {
+  Owner.update(req.body, {
     individualHooks: true,
     where: {
       id: req.params.id
     }
   })
-    .then(dbUserData => {
-      if (!dbUserData[0]) {
-        res.status(404).json({ message: 'No user found with id' });
+    .then(dbOwnerData => {
+      if (!dbOwnerData[0]) {
+        res.status(404).json({ message: 'No Owner found with id' });
         return;
       }
-      res.json(dbUserData);
+      res.json(dbOwnerData);
     })
     .catch(err => {
       console.log(err);
@@ -112,19 +112,19 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// DELETE /api/users/1
+// DELETE /api/Owners/1
 router.delete('/:id', (req, res) => {
-  User.destroy({
+  Owner.destroy({
     where: {
       id: req.params.id
     }
   })
-    .then(dbUserData => {
-      if(!dbUserData) {
-        res.status(404).json({ message: 'No user found with this id' });
+    .then(dbOwnerData => {
+      if(!dbOwnerData) {
+        res.status(404).json({ message: 'No Owner found with this id' });
         return;
       }
-      res.json(dbUserData);
+      res.json(dbOwnerData);
     })
     .catch(err => {
       console.log(err);

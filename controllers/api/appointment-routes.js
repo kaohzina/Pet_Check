@@ -1,13 +1,13 @@
 const router = require('express').Router();
-const { Comment } = require('../../models');
+const { Appointment } = require('../../models');
 
 router.get('/', (req, res) => {
-  Comment.findAll({
-    comment_text: req.body.comment_text,
+  Appointment.findAll({
+    Appointment_text: req.body.Appointment_text,
     user_id: req.body.user_id,
     post_id: req.body.post_id
   })
-    .then(dbCommentData => res.json(dbCommentData))
+    .then(dbAppointmentData => res.json(dbAppointmentData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -16,11 +16,11 @@ router.get('/', (req, res) => {
 
 
 router.post('/', (req, res) => {
-  Comment.create({
-    comment_text: req.body.comment_text,
+  Appointment.create({
+    Appointment_text: req.body.Appointment_text,
     post_url: req.body.post_url
   })
-    .then(dbCommentData => res.json(dbCommentData))
+    .then(dbAppointmentData => res.json(dbAppointmentData))
     .catch(err => {
       console.log(err);
       res.status(400).json(err);
@@ -28,17 +28,17 @@ router.post('/', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  Comment.destroy({
+  Appointment.destroy({
     where: {
     id:req.params.id,
     }
   })
-  .then(dbCommentData => {
-    if (!dbCommentData) {
-      res.status(404).json({ message: 'No comment found with this id' });
+  .then(dbAppointmentData => {
+    if (!dbAppointmentData) {
+      res.status(404).json({ message: 'No Appointment found with this id' });
       return;
     }
-    res.json(dbCommentData);
+    res.json(dbAppointmentData);
   })
   .catch(err => {
     console.log(err);
