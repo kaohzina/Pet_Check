@@ -57,3 +57,17 @@ update and upvote a post
 "user_id": 1,
 "post_id": 1
 }
+
+this is a seed example for the registration form!
+
+{
+	"firstname": "zinanshin",
+	"lastname": "kaoher",
+	"email": "kaohzina@gmail.com",
+	"phoneNumber": 123456789,
+	"petsName": "scooter",
+	"petType": "dog, cat, reptile.....",
+	"petBirthday": "timestamp?",
+	"gender": "gender"
+	"
+}
