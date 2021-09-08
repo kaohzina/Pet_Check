@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const sequelize = require('../../config/connection');
 const { Pet, Owner, Appointment } = require('../../models');
-const { aggregate } = require('../../models/Owner');
+
 
 // GET /api/users
 router.get('/', (req, res) => {
@@ -70,36 +70,14 @@ router.post('/', (req, res) => {
 
 // PUT /api/pet/appointment
 router.put('/appointment', (req, res) => {
-    Appointment.create({
-      owner_id: req.body.owner_id,
-      pet_id: req.body.pet_id
-    }).then(() => {
-    // then find the post we just voted on
-    return Pet.findOne({
-      where: {
-        id: req.body.pet_id
-      },
-      attributes: [
-        'id',
-        'name',
-        'type',
-        'breed',
-        'age',
-        'owner_id'
-        // use raw MySQL aggregate function query to get a count of how many votes the post has and return it under the name `vote_count`
-        [
-          sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appointment.pet_id)'),
-          'appointment_count'
-        ]
-      ]
-    })
-    .then(dbPetData => res.json(dbPetData))
-    .catch(err => {
-      console.log(err);
-      res.status(400).json(err);
-    });
+  Pet.appointmentDate(req.body, { Appointment })
+  .then(updatedPetData => res.json(updatedPetData))
+  .catch(err => {
+    console.log(err);
+    res.status(400).json(err);
   });
 });  
+
 // PUT /api/users/1
 router.put('/:id', (req, res) => {
 
