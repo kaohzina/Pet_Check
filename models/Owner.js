@@ -11,10 +11,8 @@ class Owner extends Model {
   }
 }
 
-// define table columns and configuration 
 Owner.init (
   {
-    // TABLE COLUMN DEFINITIONS GO IN HERE
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
