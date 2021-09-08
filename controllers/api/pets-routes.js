@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const sequelize = require('../../config/connection');
 const { Pet, Owner } = require('../../models');
+const { aggregate } = require('../../models/Owner');
 
 // GET /api/users
 router.get('/', (req, res) => {
@@ -50,7 +51,18 @@ router.get('/:id', (req, res) => {
 
 // POST /api/users
 router.post('/', (req, res) => {
-
+  Post.create({
+    name: req.body.name,
+    type: req.body.type,
+    breed: req.body.breed,
+    age: req.body.age,
+    owner_id: req.body.owner_id
+  })
+    .then(dbPetData => res.json(dbPetData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 // PUT /api/users/1
