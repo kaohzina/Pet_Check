@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Description } = require('../../models');
 
 router.get('/', (req, res) => {
-
+  Description.findAll()
 });
 
 router.post('/', (req, res) => {
@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-
+  
 });
 
 module.exports = router;

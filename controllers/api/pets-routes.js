@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const sequelize = require('../../config/connection');
-const { Pet, Owner, Appointment } = require('../../models');
+const { Pet, Owner, Appointment, Description } = require('../../models');
 
 
 // GET /api/users
@@ -10,6 +10,10 @@ router.get('/', (req, res) => {
     attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appoinment.pet_id)'), 'appointment_count']
    ],
     include: [
+      {
+        model: Description,
+        attributes: ['appointment_description']
+      },
       {
         model: Owner,
         attributes: ['fname', 'lname']
