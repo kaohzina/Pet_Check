@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
       {
         model: Description,
         attributes: ['appointment_description']
-      },
+      }, 
       {
         model: Owner,
         attributes: ['fname', 'lname']
