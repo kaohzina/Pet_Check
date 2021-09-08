@@ -70,3 +70,13 @@ this is a seed example for the registration form!
 	"petBirthday": "timestamp?",
 	"gender": "gender"
 }
+
+pets table first
+
+calender new tech
+
+polish login form 
+
+add some color and styling
+
+presentation
