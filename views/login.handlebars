@@ -1,4 +1,6 @@
-<form class="login-form">
+<div class="centerArea">
+    <div class="left">
+  <form class="login-form">
   <div>
     <label for="email-login">email:</label>
     <input type="text" id="email-login" />
@@ -11,8 +13,11 @@
     <button type="submit">login</button>
   </div>
 </form>
-
+ </div>
+  {{!-- sign up form --}}
+    <div class="right">
 <form class="signup-form">
+    <h2>Sign Up</h2>
   <div>
     <label for="username-signup">username:</label>
     <input type="text" id="username-signup" />
@@ -29,5 +34,8 @@
     <button type="submit">signup</button>
   </div>
 </form>
+
+  </div>
+</div>
 
 <script src="/javascript/login.js"></script>

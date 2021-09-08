@@ -1,17 +1,11 @@
-<<<<<<< HEAD
-
-const express = require('express');
-const mysql2 = require('mysql2');
-=======
->>>>>>> 6afc7718ec3dd25b335c2a58f2ab3d7b8342d79c
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
+const passport = require('passport');
+require('./config/passport')(passport);
 
 const app = express();
-<<<<<<< HEAD
-=======
 const PORT = process.env.PORT || 3001
 
 const sequelize = require('./config/connection');
@@ -29,7 +23,6 @@ const sess = {
 };
 
 app.use(session(sess));
->>>>>>> 6afc7718ec3dd25b335c2a58f2ab3d7b8342d79c
 
 const hbs = exphbs.create({});
 
@@ -42,9 +35,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // turn on routes
 app.use(require('./controllers/'));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 //turn on connection to db and server
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
     app.listen(PORT, () => console.log('Now listening'));
   });
 
@@ -54,7 +50,3 @@ sequelize.sync({ force: false }).then(() => {
 
 
 
-<<<<<<< HEAD
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-=======
->>>>>>> 6afc7718ec3dd25b335c2a58f2ab3d7b8342d79c
