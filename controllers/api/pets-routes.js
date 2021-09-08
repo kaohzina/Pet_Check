@@ -21,9 +21,31 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /api/users/1
+// GET /api/pet/1
 router.get('/:id', (req, res) => {
-
+  Pet.findOne({
+    where: {
+      id: req.params.id
+    },
+    attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id' ],
+    include: [
+      {
+        model: Owner,
+        attributes: ['fname', 'lname']
+      }
+    ]
+  })
+    .then(dbPetData => {
+      if (!dbPetData) {
+        res.status(404).json({ message: 'No pet found with this owner' });
+        return;
+      }
+      res.json(dbPetData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 // POST /api/users
