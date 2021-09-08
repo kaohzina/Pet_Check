@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Owner, Appointment } = require('../../models');
+const { Owner, Appointment, Description, Pet } = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
@@ -29,7 +29,12 @@ router.get('/:id', (req, res) => {
       attributes: ['title'],
       through: Appointment,
       as: 'Pet_appointments'
+    },
+    {
+      model: Description,
+      attributes: ['id', 'appointment_description']
     }
+
   ]
   })
     .then(dbOwnerData => {
@@ -116,7 +121,7 @@ router.delete('/:id', (req, res) => {
   })
     .then(dbOwnerData => {
       if (!dbOwnerData) {
-        res.status(404).json({ message: 'No user found with this id' });
+        res.status(404).json({ message: 'No owner found with this id' });
         return;
       }
       res.json(dbOwnerData);
