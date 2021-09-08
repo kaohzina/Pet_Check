@@ -6,11 +6,11 @@ module.exports = { Owner, Pet };
 
 // create associations 
 Owner.hasMany(Pet, {
-  foreignKey: 'Owner_id'
+  foreignKey: 'owner_id'
 });
 
 Pet.belongsTo(Owner, {
-  foreignKey: 'Owner_id',
+  foreignKey: 'owner_id',
 });
 
 

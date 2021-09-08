@@ -1,10 +1,24 @@
 const router = require('express').Router();
 const sequelize = require('../../config/connection');
-const { Pets } = require('../../models');
+const { Pet, Owner } = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
-
+  console.log('======================');
+  Pet.findAll({
+    attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id' ],
+    include: [
+      {
+        model: Owner,
+        attributes: ['fname', 'lname']
+      }
+    ]
+  })
+  .then(dbPostData => res.json(dbPostData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 // GET /api/users/1
