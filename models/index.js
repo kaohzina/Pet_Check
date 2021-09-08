@@ -15,32 +15,32 @@ Pet.belongsTo(Owner, {
 
 
 
-// Owner.belongsToMany(Pet, {
-//   through: Appointment,
-//   as: 'Appointment_Pets',
-//   foreignKey: 'Owner_id'
-// });
+Owner.belongsToMany(Pet, {
+  through: Appointment,
+  as: 'Pet_Appointment',
+  foreignKey: 'owner_id'
+});
 
-// Pet.belongsToMany(Owner, {
-//   through: Appointment,
-//   as: 'Appointment_Pets',
-//   foreignKey: 'Pet_id'
-// });
+Pet.belongsToMany(Owner, {
+  through: Appointment,
+  as: 'Pet_Appointment',
+  foreignKey: 'pet_id'
+});
 
-// Appointment.belongsTo(Owner, {
-//   foreignKey: 'Owner_id'
-// });
+Appointment.belongsTo(Owner, {
+  foreignKey: 'owner_id'
+});
 
-// Appointment.belongsTo(Pet, {
-//   foreignKey: 'Pet_id'
-// });
+Appointment.belongsTo(Pet, {
+  foreignKey: 'pet_id'
+});
 
-// Owner.hasMany(Appointment, {
-//   foreignKey: 'Owner_id'
-// });
+Owner.hasMany(Appointment, {
+  foreignKey: 'owner_id'
+});
 
-// Pet.hasMany(Appointment, {
-//   foreignKey: 'Pet_id'
-// });
+Pet.hasMany(Appointment, {
+  foreignKey: 'pet_id'
+});
 
 module.exports = { Owner, Pet, Appointment };
