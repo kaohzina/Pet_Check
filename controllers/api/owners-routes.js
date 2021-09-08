@@ -34,12 +34,12 @@ router.get('/:id', (req, res) => {
 // POST /api/users
 router.post('/', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
-  User.create({
+  Owner.create({
     username: req.body.username,
     email: req.body.email,
     password: req.body.password
   })
-    .then(dbUserData => res.json(dbUserData))
+    .then(dbOwnerData => res.json(dbOwnerData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -51,17 +51,17 @@ router.put('/:id', (req, res) => {
  // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
   // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
-  User.update(req.body, {
+  Owner.update(req.body, {
     where: {
       id: req.params.id
     }
   })
-    .then(dbUserData => {
-      if (!dbUserData[0]) {
+    .then(dbOwnerData => {
+      if (!dbOwnerData[0]) {
         res.status(404).json({ message: 'No user found with this id' });
         return;
       }
-      res.json(dbUserData);
+      res.json(dbOwnerData);
     })
     .catch(err => {
       console.log(err);
@@ -71,17 +71,17 @@ router.put('/:id', (req, res) => {
 
 // DELETE /api/users/1
 router.delete('/:id', (req, res) => {
-  User.destroy({
+  Owner.destroy({
     where: {
       id: req.params.id
     }
   })
-    .then(dbUserData => {
-      if (!dbUserData) {
+    .then(dbOwnerData => {
+      if (!dbOwnerData) {
         res.status(404).json({ message: 'No user found with this id' });
         return;
       }
-      res.json(dbUserData);
+      res.json(dbOwnerData);
     })
     .catch(err => {
       console.log(err);

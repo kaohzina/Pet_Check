@@ -1,46 +1,46 @@
-const Member = require('./Owner');
+const Owner = require('./Owner');
 const Pet = require('./Pet');
 const Vote = require('./Appointment');
 
-module.exports = { Member, Pet };
+module.exports = { Owner, Pet };
 
 // create associations 
-Member.hasMany(Pet, {
-  foreignKey: 'Member_id'
+Owner.hasMany(Pet, {
+  foreignKey: 'Owner_id'
 });
 
-Pet.belongsTo(Member, {
-  foreignKey: 'Member_id',
+Pet.belongsTo(Owner, {
+  foreignKey: 'Owner_id',
 });
 
 
 
-Member.belongsToMany(Pet, {
+Owner.belongsToMany(Pet, {
   through: Vote,
   as: 'voted_Pets',
-  foreignKey: 'Member_id'
+  foreignKey: 'Owner_id'
 });
 
-Pet.belongsToMany(Member, {
+Pet.belongsToMany(Owner, {
   through: Vote,
   as: 'voted_Pets',
   foreignKey: 'Pet_id'
 });
 
-Vote.belongsTo(Member, {
-  foreignKey: 'Member_id'
+Vote.belongsTo(Owner, {
+  foreignKey: 'Owner_id'
 });
 
 Vote.belongsTo(Pet, {
   foreignKey: 'Pet_id'
 });
 
-Member.hasMany(Vote, {
-  foreignKey: 'Member_id'
+Owner.hasMany(Vote, {
+  foreignKey: 'Owner_id'
 });
 
 Pet.hasMany(Vote, {
   foreignKey: 'Pet_id'
 });
 
-module.exports = { Member, Pet, Vote };
+module.exports = { Owner, Pet, Vote };
