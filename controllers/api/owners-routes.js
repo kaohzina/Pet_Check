@@ -51,20 +51,23 @@ router.post('/', (req, res) => {
 
 router.post('/login', (req, res) => {
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}
-    User.findOne({
+    Owner.findOne({
       where: {
         email: req.body.email
       }
-    }).then(dbUserData => {
-      if (!dbUserData) {
-        res.status(400).json({ message: 'No user with that email address!' });
+    }).then(dbOwnerData => {
+      if (!dbOwnerData) {
+        res.status(400).json({ message: 'No owners with that email address!' });
         return;
       }
-  
-      res.json({ user: dbUserData });
-  
       // Verify user
-  
+      const validPassword = dbOwnerData.checkPassword(req.body.password);
+      if (!validPassword) {
+        res.status(400).json({ message: 'Incorrect password!' });
+        return;
+      }
+      
+      res.json({ user: dbOwnerData, message: 'You are now logged in!' });
     });  
   });
 
