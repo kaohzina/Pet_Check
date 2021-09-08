@@ -1,6 +1,6 @@
 const Owner = require('./Owner');
 const Pet = require('./Pet');
-const Vote = require('./Appointment');
+const Appointment = require('./Appointment');
 
 module.exports = { Owner, Pet };
 
@@ -16,31 +16,31 @@ Pet.belongsTo(Owner, {
 
 
 Owner.belongsToMany(Pet, {
-  through: Vote,
-  as: 'voted_Pets',
+  through: Appointment,
+  as: 'Appointment_Pets',
   foreignKey: 'Owner_id'
 });
 
 Pet.belongsToMany(Owner, {
-  through: Vote,
-  as: 'voted_Pets',
+  through: Appointment,
+  as: 'Appointment_Pets',
   foreignKey: 'Pet_id'
 });
 
-Vote.belongsTo(Owner, {
+Appointment.belongsTo(Owner, {
   foreignKey: 'Owner_id'
 });
 
-Vote.belongsTo(Pet, {
+Appointment.belongsTo(Pet, {
   foreignKey: 'Pet_id'
 });
 
-Owner.hasMany(Vote, {
+Owner.hasMany(Appointment, {
   foreignKey: 'Owner_id'
 });
 
-Pet.hasMany(Vote, {
+Pet.hasMany(Appointment, {
   foreignKey: 'Pet_id'
 });
 
-module.exports = { Owner, Pet, Vote };
+module.exports = { Owner, Pet, Appointment };

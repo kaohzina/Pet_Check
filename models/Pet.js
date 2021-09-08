@@ -1,35 +1,11 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-// create our Post model
-class Post extends Model {
-  //upvote is based on the post model and not an instance method
-  static upvote(body, models) {
-    return models.Vote.create({
-      user_id: body.user_id,
-      post_id: body.post_id
-    }).then(() => {
-      return Post.findOne({
-        where: {
-          id: body.post_id
-        },
-        attributes: [
-          'id',
-          'post_url',
-          'title',
-          'created_at',
-          [
-            sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'),
-            'vote_count'
-          ]
-        ]
-      });
-    });
-  }
-}
+// create our Pet model
+class Pet extends Model {
 
-// create fields/columns for Post model
-Post.init(
+}
+Pet.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -37,21 +13,26 @@ Post.init(
       primaryKey: true,
       autoIncrement: true
     },
-    title: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    post_url: {
+    type: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isURL: true
-      }
+      allowNull: false
     },
-    user_id: {
+    breed: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    age: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    owner_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'user',
+        model: 'owner',
         key: 'id'
       }
     }
@@ -60,8 +41,8 @@ Post.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'post'
+    modelName: 'pet'
   }
 );
 
-module.exports = Post;
+module.exports = Pet;
