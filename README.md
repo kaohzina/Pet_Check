@@ -80,3 +80,5 @@ polish login form
 add some color and styling
 
 presentation
+
+npm i bcrypt connect-session-sequelize dotenv express express-handlebars express-session handlebars moment mysql2 sequelize uuid
