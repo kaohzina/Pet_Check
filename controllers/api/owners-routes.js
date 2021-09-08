@@ -3,7 +3,12 @@ const { Owner } = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
-
+  Owner.findAll()
+    .then(dbOwnerData => res.json(dbOwnerData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 // GET /api/users/1
