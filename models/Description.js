@@ -1,9 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-// create our Pet model
-class Pet extends Model {
- static appointmentDate(body, models) {
+class Description extends Model { static appointmentDate(body, models) {
   return models.Appointment.create({
     owner_id: body.owner_id,
     pet_id: body.pet_id
@@ -18,44 +16,41 @@ class Pet extends Model {
   });
  }
 }
-Pet.init(
+
+Description.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    type: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    breed: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    age: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     owner_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
-        model: 'owner',
+        model: 'Owner',
         key: 'id'
       }
+    },
+    pet_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'pet',
+        key: 'id'
+      }
+    },
+    appointment_description: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   },
   {
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'pet'
+    modelName: 'comment'
   }
 );
 
-module.exports = Pet;
+module.exports = Description;
