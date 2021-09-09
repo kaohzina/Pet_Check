@@ -1,42 +1,45 @@
 const router = require('express').Router();
-const { Owner, Post, Vote } = require('../../models');
+const { Owner, Appointment, Description, Pet } = require('../../models');
 
-// GET /api/Owners
+// GET /api/users
 router.get('/', (req, res) => {
-  // Access our Owner model and run .findAll() method)
   Owner.findAll({
-  attributes: { exclude: ['password'] }
+    attributes: {exclude: ['password'] }
   })
-  .then(dbOwnerData => res.json(dbOwnerData))
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  });
+    .then(dbOwnerData => res.json(dbOwnerData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
-// GET /api/Owners/1
+// GET /api/users/1
 router.get('/:id', (req, res) => {
   Owner.findOne({
-    attributes: { exclude: ['password'] },
-    include: [
-      {
-        model: Post,
-        attributes: ['id', 'title', 'post_url', 'created_at']
-      },
-      {
-        model: Post,
-        attributes: ['title'],
-        through: Vote,
-        as: 'voted_posts'
-      }
-    ],
+    attributes: {exclude: ['password']},
     where: {
       id: req.params.id
+    },
+    include: [  {
+      model: Pet,
+      attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id']
+    },
+    {
+      model: Pet,
+      attributes: ['title'],
+      through: Appointment,
+      as: 'Pet_appointments'
+    },
+    {
+      model: Description,
+      attributes: ['id', 'appointment_description']
     }
+
+  ]
   })
     .then(dbOwnerData => {
       if (!dbOwnerData) {
-        res.status(404).json({ message: 'No Owner found with this id' });
+        res.status(404).json({ message: 'No owner found with this id' });
         return;
       }
       res.json(dbOwnerData);
@@ -47,11 +50,11 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST /api/Owners
+// POST /api/users
 router.post('/', (req, res) => {
-  // expects {Ownername 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
+  // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   Owner.create({
-    Ownername: req.body.Ownername,
+    username: req.body.username,
     email: req.body.email,
     password: req.body.password
   })
@@ -62,6 +65,7 @@ router.post('/', (req, res) => {
     });
 });
 
+//POST /api/users/login
 router.post('/login', (req, res) => {
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}
     Owner.findOne({
@@ -70,27 +74,23 @@ router.post('/login', (req, res) => {
       }
     }).then(dbOwnerData => {
       if (!dbOwnerData) {
-        res.status(400).json({ message: 'No Owner with that email address!' });
+        res.status(400).json({ message: 'No owners with that email address!' });
         return;
       }
-  
-      // res.json({ Owner: dbOwnerData });
-  
-      // Verify Owner
+      // Verify user
       const validPassword = dbOwnerData.checkPassword(req.body.password);
-
       if (!validPassword) {
         res.status(400).json({ message: 'Incorrect password!' });
         return;
       }
-
-      res.json({ Owner: dbOwnerData, message: 'You are now logged in!'});
+      
+      res.json({ user: dbOwnerData, message: 'You are now logged in!' });
     });  
   });
 
-// PUT /api/Owners/1
+// PUT /api/users/1
 router.put('/:id', (req, res) => {
-   // expects {Ownername: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
+ // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
   // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
   Owner.update(req.body, {
@@ -101,7 +101,7 @@ router.put('/:id', (req, res) => {
   })
     .then(dbOwnerData => {
       if (!dbOwnerData[0]) {
-        res.status(404).json({ message: 'No Owner found with id' });
+        res.status(404).json({ message: 'No user found with this id' });
         return;
       }
       res.json(dbOwnerData);
@@ -112,7 +112,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// DELETE /api/Owners/1
+// DELETE /api/users/1
 router.delete('/:id', (req, res) => {
   Owner.destroy({
     where: {
@@ -120,8 +120,8 @@ router.delete('/:id', (req, res) => {
     }
   })
     .then(dbOwnerData => {
-      if(!dbOwnerData) {
-        res.status(404).json({ message: 'No Owner found with this id' });
+      if (!dbOwnerData) {
+        res.status(404).json({ message: 'No owner found with this id' });
         return;
       }
       res.json(dbOwnerData);
