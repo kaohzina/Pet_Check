@@ -84,12 +84,48 @@ router.put('/appointment', (req, res) => {
 
 // PUT /api/users/1
 router.put('/:id', (req, res) => {
-
+  Pet.update(
+    {
+      title: req.body.title
+    },
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  )
+    .then(dbPetData => {
+      if (!dbPetData) {
+        res.status(404).json({ message: 'No pet found with this id' });
+        return;
+      }
+      res.json(dbPetData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 // DELETE /api/users/1
 router.delete('/:id', (req, res) => {
-
+  console.log('id', req.params.id);
+  Pet.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(dbPetData => {
+      if (!dbPetData) {
+        res.status(404).json({ message: 'No pet found with this id' });
+        return;
+      }
+      res.json(dbPetData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;

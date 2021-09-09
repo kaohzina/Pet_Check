@@ -71,11 +71,11 @@ this is a seed example for the registration form!
 	"gender": "gender"
 }
 
-pets table first
+pets table first 
 
 calender new tech
 
-polish login form 
+working login form (front end to backend) 
 
 add some color and styling
 
