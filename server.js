@@ -2,8 +2,7 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
-const passport = require('passport');
-require('./config/passport')(passport);
+
 
 const app = express();
 const PORT = process.env.PORT || 3001
@@ -35,12 +34,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // turn on routes
 app.use(require('./controllers/'));
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 //turn on connection to db and server
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => console.log('Now listening'));
   });
 
