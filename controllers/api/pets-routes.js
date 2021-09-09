@@ -71,7 +71,6 @@ router.post('/', (req, res) => {
     });
 });
 
-
 // PUT /api/pet/appointment
 router.put('/appointment', (req, res) => {
   Pet.appointmentDate(req.body, { Appointment })
