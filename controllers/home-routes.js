@@ -1,16 +1,102 @@
 const sequelize = require('../config/connection');
-const { Post, User, Comment } = require('../models');
+const { Pet, Owner, Description } = require('../models');
 const router = require('express').Router();
 // Homepage Route:
+
 router.get('/', (req, res) => {
-  res.render('homepage');
+  console.log('======================');
+  Pet.findAll({
+    attributes: [
+      'id',
+      'name',
+      'type',
+      'breed',
+      'age',
+      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE Pet.id = Appointment.pet_id)'), 'Pet_Appointment']
+    ],
+    include: [
+      {
+        model: Description,
+        attributes: ['appointment_description'],
+        include: {
+          model: Owner,
+          attributes: ['fname', 'lname']
+        }
+      },
+      {
+        model: Owner,
+        attributes: ['fname', 'lname']
+      }
+    ]
+  })
+    .then(dbPetData => {
+      const Pets = dbPetData.map(Pet => Pet.get({ plain: true }));
+
+      res.render('homepage', {
+        Pets,
+        loggedIn: req.session.loggedIn
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
-router.get('/register', (req, res) => {
-  res.render('register');
+// get single Pet
+router.get('/Pet/:id', (req, res) => {
+  Pet.findOne({
+    where: {
+      id: req.params.id
+    },
+    attributes: [
+      'id',
+      'name',
+      'type',
+      'breed',
+      'age',
+      [sequelize.literal('(SELECT COUNT(*) FROM Appoinment WHERE Pet.id = Appointment_pet.id)'), 'Pet_Appointment']
+    ],
+    include: [
+      {
+        model: Description,
+        attributes: ['appointment_description'],
+        include: {
+          model: Owner,
+          attributes: ['fname', 'lname']
+        }
+      },
+      {
+        model: Owner,
+        attributes: ['fname', 'lname']
+      }
+    ]
+  })
+    .then(dbPetData => {
+      if (!dbPetData) {
+        res.status(404).json({ message: 'No Pet found with this id' });
+        return;
+      }
+
+      const Pet = dbPetData.get({ plain: true });
+
+      res.render('single-Pet', {
+        Pet,
+        loggedIn: req.session.loggedIn
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.get('/login', (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect('/');
+    return;
+  }
+
   res.render('login');
 });
 
