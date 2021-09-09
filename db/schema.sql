@@ -1,3 +1,3 @@
-DROP DATABASE IF EXISTS pet_appointment_db;
+DROP DATABASE IF EXISTS pet_check_db;
 
-CREATE DATABASE pet_appointment_db;
+CREATE DATABASE pet_check_db;

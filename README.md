@@ -1,4 +1,3 @@
-# crave_repository_mysql
 
 A small pet shop needs a database to inventory new customers data
 Make a database that can communicate with html and look pretty for the customers to use
