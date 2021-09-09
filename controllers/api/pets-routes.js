@@ -1,46 +1,50 @@
 const router = require('express').Router();
 const sequelize = require('../../config/connection');
-const { Pet, User, Vote } = require('../../models');
+const { Pet, Owner, Appointment, Description } = require('../../models');
 
 
-// get all users
+// GET /api/users
 router.get('/', (req, res) => {
+  console.log('======================');
   Pet.findAll({
-    attributes: ['id', 'Pet_url', 'title', 'created_at', [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE Pet.id = vote.Pet_id)'), 'vote_count']
-    ],
-    order: [['created_at', 'DESC']],
+    attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appointment.pet_id)'), 'appointment_count']
+   ],
     include: [
       {
-        model: User,
-        attributes: ['username']
+        model: Description,
+        attributes: ['appointment_description']
+      }, 
+      {
+        model: Owner,
+        attributes: ['fname', 'lname']
       }
     ]
   })
-    .then(dbPetData => res.json(dbPetData))
+  .then(dbPostData => res.json(dbPostData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
     });
 });
 
-// get one user
+// GET /api/pet/1
 router.get('/:id', (req, res) => {
   Pet.findOne({
     where: {
       id: req.params.id
     },
-    attributes: ['id', 'Pet_url', 'title', 'created_at', [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE Pet.id = vote.Pet_id)'), 'vote_count']
-  ],
+    attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appoinment.pet_id)'), 'appointment_count']
+   ],
     include: [
       {
-        model: User,
-        attributes: ['username']
+        model: Owner,
+        attributes: ['fname', 'lname']
       }
     ]
   })
     .then(dbPetData => {
       if (!dbPetData) {
-        res.status(404).json({ message: 'No Pet found with this id' });
+        res.status(404).json({ message: 'No pet found with this owner' });
         return;
       }
       res.json(dbPetData);
@@ -51,13 +55,14 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// get all Pets
+// POST /api/users
 router.post('/', (req, res) => {
-  // expects {title: 'Taskmaster goes public!', Pet_url: 'https://taskmaster.com/press', user_id: 1}
-  Pet.create({
-    title: req.body.title,
-    Pet_url: req.body.Pet_url,
-    user_id: req.body.user_id
+  Post.create({
+    name: req.body.name,
+    type: req.body.type,
+    breed: req.body.breed,
+    age: req.body.age,
+    owner_id: req.body.owner_id
   })
     .then(dbPetData => res.json(dbPetData))
     .catch(err => {
@@ -66,61 +71,25 @@ router.post('/', (req, res) => {
     });
 });
 
-// PUT /api/Pets/upvote
-// Make sure this is above the /:id put route, express will think "upvote" is a valid parameter for /:id
-router.put('/upvote', (req, res) => {
-  // custom static method created in models/Pet.js
-  Pet.upvote(req.body, { Vote })
-    .then(updatedPetData => res.json(updatedPetData))
-    .catch(err => {
-      console.log(err);
-      res.status(400).json(err);
-    });
-});
-// update one Pet
+
+// PUT /api/pet/appointment
+router.put('/appointment', (req, res) => {
+  Pet.appointmentDate(req.body, { Appointment })
+  .then(updatedPetData => res.json(updatedPetData))
+  .catch(err => {
+    console.log(err);
+    res.status(400).json(err);
+  });
+});  
+
+// PUT /api/users/1
 router.put('/:id', (req, res) => {
-  Pet.update(
-    {
-      title: req.body.title
-    },
-    {
-      where: {
-        id: req.params.id
-      }
-    }
-  )
-    .then(dbPetData => {
-      if (!dbPetData) {
-        res.status(404).json({ message: 'No Pet found with this id' });
-        return;
-      }
-      res.json(dbPetData);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+
 });
 
-// delete one Pet
+// DELETE /api/users/1
 router.delete('/:id', (req, res) => {
-  Pet.destroy({
-    where: {
-      id: req.params.id
-    }
-  })
-    .then(dbPetData => {
-      if (!dbPetData) {
-        res.status(404).json({ message: 'No Pet found with this id' });
-        return;
-      }
-      res.json(dbPetData);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
 
+});
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
+<<<<<<< HEAD
 // create our Post model
 class Pet extends Model {
   //upvote is based on the post model and not an instance method
@@ -24,11 +25,30 @@ class Pet extends Model {
           ]
         ]
       });
+=======
+// create our Pet model
+class Pet extends Model {
+ static appointmentDate(body, models) {
+  return models.Appointment.create({
+    owner_id: body.owner_id,
+    pet_id: body.pet_id
+  }).then(() => {
+    return Pet.findOne({
+      where: {
+        id: body.pet_id
+      },
+      attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appoinment.pet_id)'), 'appointment_count']
+      ]  
+>>>>>>> develop
     });
-  }
+  });
+ }
 }
+<<<<<<< HEAD
 
 // create fields/columns for Post model
+=======
+>>>>>>> develop
 Pet.init(
   {
     id: {
@@ -37,21 +57,26 @@ Pet.init(
       primaryKey: true,
       autoIncrement: true
     },
-    title: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    post_url: {
+    type: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isURL: true
-      }
+      allowNull: false
     },
-    user_id: {
+    breed: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    age: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    owner_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'user',
+        model: 'owner',
         key: 'id'
       }
     }

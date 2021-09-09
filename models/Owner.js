@@ -4,24 +4,26 @@ const bcrypt = require('bcrypt');
 
 
 // create our User model
-class User extends Model {
+class Owner extends Model {
   // set up method to run on instance data (per user) to check password
   checkPassword(loginPw) {
     return bcrypt.compareSync(loginPw, this.password);
   }
 }
 
-// define table columns and configuration 
-User.init (
+Owner.init (
   {
-    // TABLE COLUMN DEFINITIONS GO IN HERE
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    username: {
+    fname: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    lname: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -43,13 +45,13 @@ User.init (
   },
   {
     hooks: {
-      async beforeCreate(newUserData) {
-        newUserData.password = await bcrypt.hash(newUserData.password, 10);
-        return newUserData;
+      async beforeCreate(newOwnerData) {
+        newOwnerData.password = await bcrypt.hash(newOwnerData.password, 10);
+        return newOwnerData;
       },
-      async beforeUpdate(updatedUserData) {
-        updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
-        return updatedUserData;
+      async beforeUpdate(updatedOwnerData) {
+        updatedOwnerData.password = await bcrypt.hash(updatedOwnerData.password, 10);
+        return updatedOwnerData;
       }
     },
     sequelize,
@@ -57,12 +59,12 @@ User.init (
     freezeTableName: true,
     underscored: true,
 
-    modelName: 'user'
+    modelName: 'owner'
   }
 );
 
 
 
-module.exports = User;
+module.exports = Owner;
   
  

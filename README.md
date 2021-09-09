@@ -1,4 +1,3 @@
-# crave_repository_mysql
 
 A small pet shop needs a database to inventory new customers data
 Make a database that can communicate with html and look pretty for the customers to use
@@ -70,3 +69,15 @@ this is a seed example for the registration form!
 	"petBirthday": "timestamp?",
 	"gender": "gender"
 }
+
+pets table first
+
+calender new tech
+
+polish login form 
+
+add some color and styling
+
+presentation
+
+npm i bcrypt connect-session-sequelize dotenv express express-handlebars express-session handlebars moment mysql2 sequelize uuid
