@@ -14,8 +14,6 @@ Pet.belongsTo(Owner, {
   foreignKey: 'owner_id',
 });
 
-
-
 Owner.belongsToMany(Pet, {
   through: Appointment,
   as: 'Pet_Appointment',
