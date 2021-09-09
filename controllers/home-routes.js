@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
     .then(dbPetData => {
       const Pets = dbPetData.map(Pet => Pet.get({ plain: true }));
 
-      res.render('homepage', {
+      res.render('/homepage', {
         Pets,
         loggedIn: req.session.loggedIn
       });
@@ -80,7 +80,7 @@ router.get('/Pet/:id', (req, res) => {
 
       const Pet = dbPetData.get({ plain: true });
 
-      res.render('single-Pet', {
+      res.render('/register', {
         Pet,
         loggedIn: req.session.loggedIn
       });
