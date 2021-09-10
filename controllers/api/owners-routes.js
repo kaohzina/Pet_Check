@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Owner, Appointment, Description, Pet } = require('../../models');
 
-// GET /api/users
+// GET /api/owner
 router.get('/', (req, res) => {
   Owner.findAll({
     attributes: {exclude: ['password'] }
@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /api/users/1
+// GET /api/owner/1
 router.get('/:id', (req, res) => {
   Owner.findOne({
     attributes: {exclude: ['password']},
@@ -22,7 +22,7 @@ router.get('/:id', (req, res) => {
     },
     include: [  {
       model: Pet,
-      attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id']
+      attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_name']
     },
     {
       model: Pet,
@@ -50,7 +50,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST /api/users
+// POST /api/owner
 router.post('/', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   Owner.create({
@@ -66,7 +66,7 @@ router.post('/', (req, res) => {
     });
 });
 
-//POST /api/users/login
+//POST /api/owner/login
 router.post('/login', (req, res) => {
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}
     Owner.findOne({
@@ -89,7 +89,7 @@ router.post('/login', (req, res) => {
     });  
   });
 
-// PUT /api/users/1
+// PUT /api/owner/1
 router.put('/:id', (req, res) => {
  // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
@@ -113,7 +113,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// DELETE /api/users/1
+// DELETE /api/owner/1
 router.delete('/:id', (req, res) => {
   Owner.destroy({
     where: {

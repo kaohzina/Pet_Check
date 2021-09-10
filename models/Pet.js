@@ -42,11 +42,11 @@ Pet.init(
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    owner_id: {
-      type: DataTypes.INTEGER,
+    owner_fullname: {
+      type: DataTypes.STRING,
       references: {
         model: 'owner',
-        key: 'id'
+        key: 'fname lname'
       }
     }
   },
