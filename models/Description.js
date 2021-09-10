@@ -9,9 +9,7 @@ class Description extends Model { static appointmentDate(body, models) {
     return Pet.findOne({
       where: {
         id: body.pet_id
-      },
-      attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appoinment.pet_id)'), 'appointment_count']
-      ]  
+      }
     });
   });
  }
