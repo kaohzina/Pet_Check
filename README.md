@@ -81,3 +81,18 @@ add some color and styling
 presentation
 
 npm i bcrypt connect-session-sequelize dotenv express express-handlebars express-session handlebars moment mysql2 sequelize uuid
+
+{
+	"fname":"Z",
+	"lname":"Kaoher",
+	"email":"z@gmail.com",
+	"password":"password1234"
+}
+
+{
+	"name":"scooter",
+	"type":"cat",
+	"breed":"tabby",
+	"age":"3",
+	"owner_id":1
+}
