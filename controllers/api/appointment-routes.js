@@ -3,10 +3,11 @@ const { Appointment } = require('../../models');
 
 router.get('/', (req, res) => {
   Appointment.findAll({
+    owner_name: req.body.owner_name,
+    pet_name: req.body.pet_name,
     date: req.body.date,
     time: req.body.time,
-    owner_name: req.body.owner_name,
-    pet_name: req.body.pet_name
+    description: req.body.description
   })
     .then(dbAppointmentData => res.json(dbAppointmentData))
     .catch(err => {
