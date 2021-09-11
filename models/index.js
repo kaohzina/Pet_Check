@@ -48,7 +48,7 @@ Description.belongsTo(Appointment, {
   foreignKey: 'owner_id pet_id'
 });
 
-Description.belongsTo(Pet, {
+Appointment.belongsTo(Pet, {
   foreignKey: 'pet_id'
 });
 
