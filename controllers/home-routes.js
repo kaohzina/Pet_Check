@@ -65,9 +65,9 @@ router.get('/Pet/:id', (req, res) => {
 
       const Pet = dbPetData.get({ plain: true });
 
-      res.render('/register', {
-        Pet,
-        loggedIn: req.session.loggedIn
+      res.render('register', {
+        // Pet,
+        // loggedIn: req.session.loggedIn
       });
     })
     .catch(err => {

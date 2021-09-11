@@ -36,7 +36,7 @@ router.delete('/:id', (req, res) => {
   Appointment.destroy({
     where: {
     owner_name: req.params.owner_name,
-    pet_name:req.params.pet_name,
+    pet_name: req.params.pet_name,
     }
   })
   .then(dbAppointmentData => {

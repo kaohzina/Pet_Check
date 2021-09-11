@@ -7,11 +7,11 @@ module.exports = { Owner, Pet };
 
 // create associations 
 Owner.hasMany(Pet, {
-  foreignKey: 'owner_id'
+  foreignKey: 'owner_name'
 });
 
 Pet.belongsTo(Owner, {
-  foreignKey: 'owner_id',
+  foreignKey: 'owner_name',
 });
 
 
@@ -19,29 +19,29 @@ Pet.belongsTo(Owner, {
 Owner.belongsToMany(Pet, {
   through: Appointment,
   as: 'Pet_Appointment',
-  foreignKey: 'owner_id'
+  foreignKey: 'owner_name'
 });
 
 Pet.belongsToMany(Owner, {
   through: Appointment,
   as: 'Pet_Appointment',
-  foreignKey: 'pet_id'
+  foreignKey: 'pet_name'
 });
 
 Appointment.belongsTo(Owner, {
-  foreignKey: 'owner_id'
+  foreignKey: 'owner_name'
 });
 
 Appointment.belongsTo(Pet, {
-  foreignKey: 'pet_id'
+  foreignKey: 'pet_name'
 });
 
 Owner.hasMany(Appointment, {
-  foreignKey: 'owner_id'
+  foreignKey: 'owner_name'
 });
 
 Pet.hasMany(Appointment, {
-  foreignKey: 'pet_id'
+  foreignKey: 'pet_name'
 });
 
 
