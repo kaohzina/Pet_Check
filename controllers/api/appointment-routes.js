@@ -35,12 +35,13 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   Appointment.destroy({
     where: {
-    id:req.params.id,
+    owner_name: req.params.owner_name,
+    pet_name:req.params.pet_name,
     }
   })
   .then(dbAppointmentData => {
     if (!dbAppointmentData) {
-      res.status(404).json({ message: 'No Appointment found with this id' });
+      res.status(404).json({ message: 'No Appointment found with this owner or pet.' });
       return;
     }
     res.json(dbAppointmentData);
