@@ -1,7 +1,7 @@
 const Owner = require('./Owner');
 const Pet = require('./Pet');
 const Appointment = require('./Appointment');
-const Description = require('./Description');
+
 
 module.exports = { Owner, Pet };
 
@@ -44,13 +44,7 @@ Pet.hasMany(Appointment, {
   foreignKey: 'pet_id'
 });
 
-Description.belongsTo(Appointment, {
-  foreignKey: 'owner_id pet_id'
-});
-
-Appointment.belongsTo(Pet, {
-  foreignKey: 'pet_id'
-});
 
 
-module.exports = { Owner, Pet, Appointment, Description};
+
+module.exports = { Owner, Pet, Appointment};
