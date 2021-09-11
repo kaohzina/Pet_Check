@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Owner, Appointment, Description, Pet } = require('../../models');
+const { Owner, Appointment, Pet } = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
@@ -29,12 +29,7 @@ router.get('/:id', (req, res) => {
       attributes: ['title'],
       through: Appointment,
       as: 'Pet_appointments'
-    },
-    {
-      model: Description,
-      attributes: ['id', 'appointment_description']
     }
-
   ]
   })
     .then(dbOwnerData => {
@@ -54,7 +49,8 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   Owner.create({
-    username: req.body.username,
+    fname: req.body.fname,
+    lname: req.body.lname,
     email: req.body.email,
     password: req.body.password
   })
