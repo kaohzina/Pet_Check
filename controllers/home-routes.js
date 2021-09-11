@@ -37,7 +37,8 @@ router.get('/', (req, res) => {
 });
 
 // get single Pet
-router.get('/Pet/:id', (req, res) => {
+router.get('/register', (req, res) => {
+  console.log("mandi");
   Pet.findOne({
     where: {
       id: req.params.id
@@ -71,7 +72,7 @@ router.get('/Pet/:id', (req, res) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      console.log("nick");
       res.status(500).json(err);
     });
 });
