@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
       'type',
       'breed',
       'age',
-      [sequelize.literal('(SELECT COUNT(*) FROM Pet WHERE Pet.id = Appointment.pet_id)'), 'Pet_Appointment']
+      [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE Pet.id = Appointment.pet_id)'), 'Pet_Appointment']
     ],
     include: [
       {
@@ -33,8 +33,8 @@ router.get('/', (req, res) => {
       const Pets = dbPetData.map(Pet => Pet.get({ plain: true }));
 
       res.render('/homepage', {
-        Pets,
-        loggedIn: req.session.loggedIn
+        // Pets,
+        // loggedIn: req.session.loggedIn
       });
     })
     .catch(err => {
