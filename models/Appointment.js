@@ -33,6 +33,14 @@ Appointment.init(
     time: {
       type: DataTypes.TIME,
       allowNull: false
+    },
+    description:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: 'pet owner',
+        key: 'id'
+      }
     }
   },
   {
