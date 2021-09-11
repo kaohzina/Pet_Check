@@ -19,8 +19,11 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   Appointment.create({
-    Appointment_text: req.body.Appointment_text,
-    post_url: req.body.post_url
+    owner_name: req.params.owner_name,
+    pet_name: req.params.pet_name,
+    date: req.params.date,
+    time: req.params.time,
+    description: req.params.description
   })
     .then(dbAppointmentData => res.json(dbAppointmentData))
     .catch(err => {
