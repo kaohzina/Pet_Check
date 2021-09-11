@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
       'type',
       'breed',
       'age',
-      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE Pet.id = Appointment.pet_id)'), 'Pet_Appointment']
+      [sequelize.literal('(SELECT COUNT(*) FROM Pet WHERE Pet.id = Appointment.pet_id)'), 'Pet_Appointment']
     ],
     include: [
       {
