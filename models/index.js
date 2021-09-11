@@ -44,20 +44,13 @@ Pet.hasMany(Appointment, {
   foreignKey: 'pet_id'
 });
 
-Description.belongsTo(Owner, {
-  foreignKey: 'owner_id'
+Description.belongsTo(Appointment, {
+  foreignKey: 'owner_id pet_id'
 });
 
 Description.belongsTo(Pet, {
   foreignKey: 'pet_id'
 });
 
-Owner.hasMany(Description, {
-  foreignKey: 'owner_id'
-});
-
-Pet.hasMany(Description, {
-  foreignKey: 'pet_id'
-});
 
 module.exports = { Owner, Pet, Appointment, Description};
