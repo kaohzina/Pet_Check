@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
       'type',
       'breed',
       'age',
-      [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE Pet.id = Appointment.pet_id)'), 'Pet_Appointment']
+      [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = Appointment.pet_id)'), 'Pet_Appointment']
     ],
     include: [
       {
@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
 });
 
 // get single Pet
-router.get('/register', (req, res) => {
+router.get('/register/:id', (req, res) => {
   console.log("mandi");
   Pet.findOne({
     where: {
@@ -47,7 +47,7 @@ router.get('/register', (req, res) => {
       'type',
       'breed',
       'age',
-      [sequelize.literal('(SELECT COUNT(*) FROM Appoinment WHERE Pet.id = Appointment_pet.id)'), 'Pet_Appointment']
+      [sequelize.literal('(SELECT COUNT(*) FROM Appointment WHERE pet.id = Appointment.pet_id)'), 'Pet_Appointment']
     ],
     include: [
       {
@@ -70,7 +70,7 @@ router.get('/register', (req, res) => {
       });
     })
     .catch(err => {
-      console.log("nick");
+      console.log(err);
       res.status(500).json(err);
     });
 });
