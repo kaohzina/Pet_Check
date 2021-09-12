@@ -2,7 +2,6 @@ const router = require('express').Router();
 const sequelize = require('../../config/connection');
 const { Pet, Owner, Appointment } = require('../../models');
 
-
 // GET /api/pets
 router.get('/', (req, res) => {
   Pet.findAll({
@@ -21,7 +20,6 @@ router.get('/', (req, res) => {
       res.status(500).json(err);
     });
 });
-
 // GET /api/pet/1
 router.get('/:id', (req, res) => {
   Pet.findOne({
@@ -52,7 +50,6 @@ router.get('/:id', (req, res) => {
       res.status(500).json(err);
     });
 });
-
 // POST /api/pet
 router.post('/', (req, res) => {
   Pet.create({
@@ -68,7 +65,6 @@ router.post('/', (req, res) => {
       res.status(500).json(err);
     });
 });
-
 // PUT /api/pet/appointment
 router.put('/appointment', (req, res) => {
   if(req.session){
@@ -80,12 +76,15 @@ router.put('/appointment', (req, res) => {
     });
   }
 });  
-
-// PUT /api/users/1
+// PUT /api/pet/1
 router.put('/:id', (req, res) => {
   Pet.update(
     {
-      title: req.body.title
+      name: req.body.name,
+      type: req.body.type,
+      breed: req.body.breed,
+      age: req.body.age,
+      owner_fullname: req.body.owner_fullname
     },
     {
       where: {
@@ -95,7 +94,7 @@ router.put('/:id', (req, res) => {
   )
     .then(dbPetData => {
       if (!dbPetData) {
-        res.status(404).json({ message: 'No pet found with this id' });
+        res.status(404).json({ message: 'No pet found with this owner' });
         return;
       }
       res.json(dbPetData);
@@ -105,8 +104,7 @@ router.put('/:id', (req, res) => {
       res.status(500).json(err);
     });
 });
-
-// DELETE /api/users/1
+// DELETE /api/pet/1
 router.delete('/:id', (req, res) => {
   console.log('id', req.params.id);
   Pet.destroy({
