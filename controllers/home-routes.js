@@ -2,10 +2,8 @@ const sequelize = require('../config/connection');
 const { Owner, Pet, Appointment} = require('../models');
 const router = require('express').Router();
 
-// Homepage Route:
-
+//Get all appointments for the homepage
 router.get('/', (req, res) => {
-  console.log('======================');
   Pet.findAll({
     attributes: [
       'id',
