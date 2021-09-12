@@ -51,7 +51,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST /api/users
+// POST /api/pet
 router.post('/', (req, res) => {
   Pet.create({
     name: req.body.name,

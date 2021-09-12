@@ -25,10 +25,8 @@ router.get('/:id', (req, res) => {
       attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_name']
     },
     {
-      model: Pet,
-      attributes: ['title'],
-      through: Appointment,
-      as: 'Pet_appointments'
+      model: Appointment,
+      attributes: ['date', 'time', 'description']
     }
   ]
   })
@@ -49,12 +47,20 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   Owner.create({
-    fname: req.body.fname,
-    lname: req.body.lname,
+    first_name: req.body.fname,
+    last_name: req.body.lname,
     email: req.body.email,
     password: req.body.password
   })
-    .then(dbOwnerData => res.json(dbOwnerData))
+    .then(dbOwnerData => {
+    req.session.save(() => {
+      req.session.owner_id = dbOwnerData.id;
+      req.session.first_name = dbOwnerData.first_name;
+      req.session.last_name = dbOwnerData.last_name;
+      req.session.loggedIn = true;
+      res.json(dbOwnerData);
+    });
+  })
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -83,6 +89,16 @@ router.post('/login', (req, res) => {
       res.json({ user: dbOwnerData, message: 'You are now logged in!' });
     });  
   });
+
+router.post('/logout', (req, res) => {
+  if (req.session.loggedIn) {
+    req.session.destroy(() => {
+      res.status(204).end();
+    });
+  } else {
+    res.status(404).end();
+  }
+});
 
 // PUT /api/owner/1
 router.put('/:id', (req, res) => {

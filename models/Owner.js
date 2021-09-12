@@ -19,11 +19,11 @@ Owner.init (
       primaryKey: true,
       autoIncrement: true
     },
-    fname: {
+    first_name: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    lname: {
+    last_name: {
       type: DataTypes.STRING,
       allowNull: false
     },
