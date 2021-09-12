@@ -5,9 +5,8 @@ const { Pet, Owner, Appointment } = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
-  console.log('======================');
   Pet.findAll({
-    attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appointment.pet_id)'), 'appointment_count']
+    attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_fullname', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appointment.pet_id)'), 'appointment_count']
    ],
     include: [
       {
