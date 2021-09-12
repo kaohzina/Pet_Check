@@ -45,7 +45,7 @@ router.get('/:id', (req, res) => {
 
 // POST /api/owner
 router.post('/', (req, res) => {
-  // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
+  // expects {username: 'Z', email: 'z@gmail.com', password: 'password1234'}
   Owner.create({
     first_name: req.body.fname,
     last_name: req.body.lname,
@@ -69,7 +69,7 @@ router.post('/', (req, res) => {
 
 //POST /api/owner/login
 router.post('/login', (req, res) => {
-  // expects {email: 'lernantino@gmail.com', password: 'password1234'}
+  // expects {email: 'z@gmail.com', password: 'password1234'}
     Owner.findOne({
       where: {
         email: req.body.email
