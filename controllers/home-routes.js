@@ -1,5 +1,5 @@
 const sequelize = require('../config/connection');
-const { Owner, Pet, Appointment} = require('../models');
+const { Owner, Pet, Appointment, seeds} = require('../models');
 const router = require('express').Router();
 
 //Get all appointments for the homepage
@@ -24,8 +24,8 @@ router.get('/', (req, res) => {
       const Pets = dbPetData.map(Pet => Pet.get({ plain: true }));
 
       res.render('homepage', {
-        // Pets,
-        // loggedIn: req.session.loggedIn
+        Pets,
+        loggedIn: req.session.loggedIn
       });
     })
     .catch(err => {
@@ -35,8 +35,7 @@ router.get('/', (req, res) => {
 });
 
 // get single Pet
-router.get('/register/:id', (req, res) => {
-  console.log("mandi");
+router.get('/pet/:id', (req, res) => {
   Pet.findOne({
     where: {
       id: req.params.id
@@ -58,15 +57,15 @@ router.get('/register/:id', (req, res) => {
   })
     .then(dbPetData => {
       if (!dbPetData) {
-        res.status(404).json({ message: 'No Pet found with this id' });
+        res.status(404).json({ message: 'No pet found with this id' });
         return;
       }
 
       const Pet = dbPetData.get({ plain: true });
 
       res.render('register', {
-        // Pet,
-        // loggedIn: req.session.loggedIn
+        Pet,
+        loggedIn: req.session.loggedIn
       });
     })
     .catch(err => {

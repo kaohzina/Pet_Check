@@ -16,7 +16,6 @@ router.get('/', (req, res) => {
     });
 });
 
-
 router.post('/', (req, res) => {
   if (req.session) {
   Appointment.create({
