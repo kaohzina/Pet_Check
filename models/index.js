@@ -29,19 +29,23 @@ Pet.belongsToMany(Owner, {
 });
 
 Appointment.belongsTo(Owner, {
-  foreignKey: 'owner_id'
+  foreignKey: 'owner_id',
+  onDelete: 'SET NULL'
 });
 
 Appointment.belongsTo(Pet, {
-  foreignKey: 'pet_id'
+  foreignKey: 'pet_id',
+  onDelete: 'SET NULL'
 });
 
 Owner.hasMany(Appointment, {
-  foreignKey: 'owner_id'
+  foreignKey: 'owner_id',
+  onDelete: 'SET NULL'
 });
 
 Pet.hasMany(Appointment, {
-  foreignKey: 'pet_id'
+  foreignKey: 'pet_id',
+  onDelete: 'SET NULL'
 });
 
 
