@@ -3,7 +3,7 @@ const sequelize = require('../../config/connection');
 const { Pet, Owner, Appointment } = require('../../models');
 
 
-// GET /api/users
+// GET /api/pets
 router.get('/', (req, res) => {
   Pet.findAll({
     attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_fullname', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appointment.pet_id)'), 'appointment_count']
@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
     include: [
       {
         model: Owner,
-        attributes: ['fname', 'lname']
+        attributes: ['first_name', 'last_name']
       }
     ]
   })
@@ -28,12 +28,15 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id
     },
-  //   attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appoinment.pet_id)'), 'appointment_count']
-  //  ],
+    attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_name', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appoinment.pet_id)'), 'appointment_count']
+   ],
     include: [
       {
-        model: Owner,
-        attributes: ['fname', 'lname']
+        model: Appointment,
+        attributes: ['description'],
+        include: {model: Owner,
+          attributes: ['fname', 'lname']
+        }
       }
     ]
   })
@@ -57,7 +60,7 @@ router.post('/', (req, res) => {
     type: req.body.type,
     breed: req.body.breed,
     age: req.body.age,
-    owner_id: req.body.owner_id
+    owner_id: req.session.owner_id
   })
     .then(dbPetData => res.json(dbPetData))
     .catch(err => {
@@ -68,12 +71,14 @@ router.post('/', (req, res) => {
 
 // PUT /api/pet/appointment
 router.put('/appointment', (req, res) => {
-  Pet.appointmentDate(req.body, { Appointment })
-  .then(updatedPetData => res.json(updatedPetData))
-  .catch(err => {
-    console.log(err);
-    res.status(400).json(err);
-  });
+  if(req.session){
+    Pet.appointmentDate({ ...req.body, owner_id: req.session.owner_id }, { Appointment, Owner, Pet })
+    .then(updatedPetData => res.json(updatedPetData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+  }
 });  
 
 // PUT /api/users/1
