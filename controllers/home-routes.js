@@ -1,9 +1,5 @@
 const sequelize = require('../config/connection');
-<<<<<<< HEAD
-const { Pet, Owner, Description } = require('../models');
-=======
 const { Pet, Owner } = require('../models');
->>>>>>> controller
 const router = require('express').Router();
 // Homepage Route:
 
