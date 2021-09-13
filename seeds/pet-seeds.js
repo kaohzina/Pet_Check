@@ -89,6 +89,29 @@ const petdata = [
 	"owner_id":9,
   "gender":"male"
   },
+	'ownerId": '51',
+        'name': 'Fufu',
+        'type': 'dog',
+        'breed': 'pomeranian',
+        'age': '2 months',
+        'sex': 'male'
+    },
+    {
+        'ownerId': '22',
+        'name': 'Bubu',
+        'type': 'dog',
+        'breed': 'labrador',
+        'age': '4 years',
+        'sex': 'male'
+    },
+    {
+        'ownerId': '31',
+        'name': 'bubbles',
+        'type': 'fish',
+        'breed': 'koy',
+        'age': '6 years',
+        'sex': 'female'
+    },
 ]
 
 const seedPets = () => Pet.bulkCreate(petdata);
