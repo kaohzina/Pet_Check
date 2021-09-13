@@ -44,7 +44,7 @@ make a new user
 	"password": "password1234"
 }
 
-make a new post
+make a new prt
 {
 "title": "awesome",
 "post_url": "www.awesome.com",

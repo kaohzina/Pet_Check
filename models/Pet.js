@@ -40,6 +40,10 @@ Pet.init(
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     owner_fullname: {
       type: DataTypes.STRING,
       references: {
