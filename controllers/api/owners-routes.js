@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Owner, Appointment, Pet } = require('../../models');
 
-// GET /api/users
+// GET /api/owner
 router.get('/', (req, res) => {
   Owner.findAll({
     attributes: {exclude: ['password'] }
@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /api/users/1
+// GET /api/owner/1
 router.get('/:id', (req, res) => {
   Owner.findOne({
     attributes: {exclude: ['password']},
@@ -22,13 +22,11 @@ router.get('/:id', (req, res) => {
     },
     include: [  {
       model: Pet,
-      attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id']
+      attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_name']
     },
     {
-      model: Pet,
-      attributes: ['title'],
-      through: Appointment,
-      as: 'Pet_appointments'
+      model: Appointment,
+      attributes: ['date', 'time', 'description']
     }
   ]
   })
@@ -45,25 +43,33 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST /api/users
+// POST /api/owner
 router.post('/', (req, res) => {
-  // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
+  // expects {username: 'Z', email: 'z@gmail.com', password: 'password1234'}
   Owner.create({
-    fname: req.body.fname,
-    lname: req.body.lname,
+    first_name: req.body.fname,
+    last_name: req.body.lname,
     email: req.body.email,
     password: req.body.password
   })
-    .then(dbOwnerData => res.json(dbOwnerData))
+    .then(dbOwnerData => {
+    req.session.save(() => {
+      req.session.owner_id = dbOwnerData.id;
+      req.session.first_name = dbOwnerData.first_name;
+      req.session.last_name = dbOwnerData.last_name;
+      req.session.loggedIn = true;
+      res.json(dbOwnerData);
+    });
+  })
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
     });
 });
 
-//POST /api/users/login
+//POST /api/owner/login
 router.post('/login', (req, res) => {
-  // expects {email: 'lernantino@gmail.com', password: 'password1234'}
+  // expects {email: 'z@gmail.com', password: 'password1234'}
     Owner.findOne({
       where: {
         email: req.body.email
@@ -84,7 +90,17 @@ router.post('/login', (req, res) => {
     });  
   });
 
-// PUT /api/users/1
+router.post('/logout', (req, res) => {
+  if (req.session.loggedIn) {
+    req.session.destroy(() => {
+      res.status(204).end();
+    });
+  } else {
+    res.status(404).end();
+  }
+});
+
+// PUT /api/owner/1
 router.put('/:id', (req, res) => {
  // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
@@ -108,7 +124,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// DELETE /api/users/1
+// DELETE /api/owner/1
 router.delete('/:id', (req, res) => {
   Owner.destroy({
     where: {

@@ -10,20 +10,20 @@ Appointment.init(
       primaryKey: true,
       autoIncrement: true
     },
-    owner_id: {
+    owner_name: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'Owner',
-        key: 'id'
+        key: 'name'
       }
     },
-    pet_id: {
+    pet_name: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'pet',
-        key: 'id'
+        key: 'name'
       }
     },
     date: {
@@ -33,6 +33,14 @@ Appointment.init(
     time: {
       type: DataTypes.TIME,
       allowNull: false
+    },
+    description:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: 'pet owner',
+        key: 'id'
+      }
     }
   },
   {

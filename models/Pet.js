@@ -12,8 +12,6 @@ class Pet extends Model {
       where: {
         id: body.pet_id
       },
-      attributes: ['id', 'name', 'type', 'breed', 'age', 'owner_id', [sequelize.literal('(SELECT COUNT(*) FROM appointment WHERE pet.id = appoinment.pet_id)'), 'appointment_count']
-      ]  
     });
   });
  }
@@ -42,11 +40,15 @@ Pet.init(
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    owner_id: {
-      type: DataTypes.INTEGER,
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    owner_fullname: {
+      type: DataTypes.STRING,
       references: {
         model: 'owner',
-        key: 'id'
+        key: 'fname lname'
       }
     }
   },
