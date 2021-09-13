@@ -1,9 +1,5 @@
 const sequelize = require('../config/connection');
-<<<<<<< HEAD
 const { Pet, Owner } = require('../models');
-=======
-const { Owner, Pet, Appointment, seeds} = require('../models');
->>>>>>> Z
 const router = require('express').Router();
 
 //Get all appointments for the homepage
