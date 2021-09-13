@@ -1,3 +1,4 @@
+{{#each pet}}
 <h1 class="text-center mb-3">{{title}}</h1>
 <form action="/api/members" method="POST" class="mb-4">
 <div class="form-group">
@@ -21,5 +22,4 @@
   <div class="mt-4 pt-2">
       <input class="btn btn-primary btn-lg" type="Submit" value="Sign Up!" />
   </div>
-
-
+{{/each}}

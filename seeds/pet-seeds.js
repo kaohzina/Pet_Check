@@ -77,7 +77,7 @@ const petdata = [
 	"name":"max",
 	"type":"dinosaur",
 	"breed":"trex",
-	"age":"99",
+	"age":"500",
 	"owner_id":8,
   "gender": "male"
   },

@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
 });
 
 // get single Pet
-router.get('/pet/:id', (req, res) => {
+router.get('/register', (req, res) => {
   Pet.findOne({
     where: {
       id: req.params.id
@@ -45,8 +45,7 @@ router.get('/pet/:id', (req, res) => {
       'name',
       'type',
       'breed',
-      'age',
-      [sequelize.literal('(SELECT COUNT(*) FROM Appointment WHERE pet.id = Appointment.pet_id)'), 'Pet_Appointment']
+      'age'
     ],
     include: [
       {
