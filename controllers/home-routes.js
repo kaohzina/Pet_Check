@@ -1,17 +1,13 @@
 const sequelize = require('../config/connection');
-<<<<<<< HEAD
-const { Pet, Owner, Description } = require('../models');
-=======
 const { Pet, Owner } = require('../models');
->>>>>>> controller
 const router = require('express').Router();
 // Homepage Route:
 
 router.get('/', (req, res) => {
   console.log('======================');
   Pet.findAll({
-    attributes: [
-      'id',
+        attributes: [
+      'ownerId',
       'name',
       'type',
       'breed',
@@ -46,7 +42,7 @@ router.get('/Pet/:id', (req, res) => {
       id: req.params.id
     },
     attributes: [
-      'id',
+      'ownerId',
       'name',
       'type',
       'breed',
@@ -56,7 +52,9 @@ router.get('/Pet/:id', (req, res) => {
     include: [
       {
         model: Owner,
-        attributes: ['fname', 'lname']
+        attributes: [
+          'fname', 'lname',
+        'email']
       }
     ]
   })
