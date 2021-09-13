@@ -31,6 +31,7 @@ app.set('view engine', 'handlebars');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride("_method"));
 
 // turn on routes
 app.use(require('./controllers/'));
